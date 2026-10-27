@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- English UI strings. The keys are the Spanish texts used in the code (Spanish is the default language). -->
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="Abrir menú" xml:space="preserve"><value>Open menu</value></data>
+  <data name="Talleres" xml:space="preserve"><value>Workshops</value></data>
+  <data name="Mis inscripciones" xml:space="preserve"><value>My enrollments</value></data>
+  <data name="Ver en inglés" xml:space="preserve"><value>View in English</value></data>
+  <data name="Ver en español" xml:space="preserve"><value>View in Spanish</value></data>
+  <data name="Cerrar sesión" xml:space="preserve"><value>Log out</value></data>
+  <data name="Iniciar sesión" xml:space="preserve"><value>Log in</value></data>
+  <data name="Inicia sesión" xml:space="preserve"><value>Log in</value></data>
+  <data name="Registrarse" xml:space="preserve"><value>Sign up</value></data>
+  <data name="Talleres cortos y presenciales" xml:space="preserve"><value>Short, in-person workshops</value></data>
+  <data name="Presencial · Grupos pequeños" xml:space="preserve"><value>In-person · Small groups</value></data>
+  <data name="Aprende algo nuevo," xml:space="preserve"><value>Learn something new,</value></data>
+  <data name="con práctica real." xml:space="preserve"><value>hands-on.</value></data>
+  <data name="Talleres cortos de fotografía, cocina, oratoria, diseño y más. Elige uno y reserva tu cupo." xml:space="preserve"><value>Short workshops in photography, cooking, public speaking, design and more. Pick one and save your seat.</value></data>
+  <data name="Busca por título, código o instructor" xml:space="preserve"><value>Search by title, code or instructor</value></data>
+  <data name="Buscar talleres" xml:space="preserve"><value>Search workshops</value></data>
+  <data name="Buscar" xml:space="preserve"><value>Search</value></data>
+  <data name="Talleres encontrados" xml:space="preserve"><value>Matching workshops</value></data>
+  <data name="Próximos talleres" xml:space="preserve"><value>Upcoming workshops</value></data>
+  <data name="Cupos disponibles" xml:space="preserve"><value>Seats available</value></data>
+  <data name="Instructores" xml:space="preserve"><value>Instructors</value></data>
+  <data name="No se encontraron talleres" xml:space="preserve"><value>No workshops found</value></data>
+  <data name="No hay próximos talleres que coincidan con “{0}”." xml:space="preserve"><value>There are no upcoming workshops matching “{0}”.</value></data>
+  <data name="No hay próximos talleres por ahora." xml:space="preserve"><value>There are no upcoming workshops right now.</value></data>
+  <data name="Limpiar búsqueda" xml:space="preserve"><value>Clear search</value></data>
+  <data name="Resultados para" xml:space="preserve"><value>Results for</value></data>
+  <data name="Limpiar" xml:space="preserve"><value>Clear</value></data>
+  <data name="Agotado" xml:space="preserve"><value>Sold out</value></data>
+  <data name="{0} cupos libres" xml:space="preserve"><value>{0} seats left</value></data>
+  <data name="{0}/{1} ocupados" xml:space="preserve"><value>{0}/{1} taken</value></data>
+  <data name="Inscrito" xml:space="preserve"><value>Enrolled</value></data>
+  <data name="Inscribirme" xml:space="preserve"><value>Enroll</value></data>
+  <data name="Los empleados gestionan las inscripciones desde la API" xml:space="preserve"><value>Employees manage enrollments through the API</value></data>
+  <data name="Quedaste inscrito en {0} · {1}." xml:space="preserve"><value>You are now enrolled in {0} · {1}.</value></data>
+  <data name="Fotografía" xml:space="preserve"><value>Photography</value></data>
+  <data name="Cocina" xml:space="preserve"><value>Cooking</value></data>
+  <data name="Oratoria" xml:space="preserve"><value>Public speaking</value></data>
+  <data name="Diseño" xml:space="preserve"><value>Design</value></data>
+  <data name="Marketing" xml:space="preserve"><value>Marketing</value></data>
+  <data name="Música" xml:space="preserve"><value>Music</value></data>
+  <data name="Taller" xml:space="preserve"><value>Workshop</value></data>
+  <data name="Todos los talleres" xml:space="preserve"><value>All workshops</value></data>
+  <data name="Sobre este taller" xml:space="preserve"><value>About this workshop</value></data>
+  <data name="Tu instructor" xml:space="preserve"><value>Your instructor</value></data>
+  <data name="Fecha" xml:space="preserve"><value>Date</value></data>
+  <data name="hasta el {0}" xml:space="preserve"><value>until {0}</value></data>
+  <data name="Horario" xml:space="preserve"><value>Time</value></data>
+  <data name="Cupos" xml:space="preserve"><value>Seats</value></data>
+  <data name="{0} de {1} disponibles" xml:space="preserve"><value>{0} of {1} available</value></data>
+  <data name="Certificado de inscripción (PDF)" xml:space="preserve"><value>Certificate of enrollment (PDF)</value></data>
+  <data name="Cancelación gratis hasta 24 h antes" xml:space="preserve"><value>Free cancellation up to 24 h before</value></data>
+  <data name="Tus cupos, certificados y cancelaciones en un solo lugar." xml:space="preserve"><value>Your seats, certificates and cancellations in one place.</value></data>
+  <data name="Aún no tienes inscripciones" xml:space="preserve"><value>You have no enrollments yet</value></data>
+  <data name="Encuentra un taller que te guste y reserva tu cupo en segundos." xml:space="preserve"><value>Find a workshop you like and save your seat in seconds.</value></data>
+  <data name="Ver talleres" xml:space="preserve"><value>Browse workshops</value></data>
+  <data name="Inscripciones en total" xml:space="preserve"><value>Total enrollments</value></data>
+  <data name="Activas" xml:space="preserve"><value>Active</value></data>
+  <data name="Canceladas" xml:space="preserve"><value>Cancelled</value></data>
+  <data name="Activa" xml:space="preserve"><value>Active</value></data>
+  <data name="Cancelada" xml:space="preserve"><value>Cancelled</value></data>
+  <data name="Inscrito el {0}" xml:space="preserve"><value>Enrolled {0}</value></data>
+  <data name="Cancelada el {0} por {1}" xml:space="preserve"><value>Cancelled {0} by {1}</value></data>
+  <data name="Certificado" xml:space="preserve"><value>Certificate</value></data>
+  <data name="¿Cancelar tu inscripción en {0}?" xml:space="preserve"><value>Cancel your enrollment in {0}?</value></data>
+  <data name="Cancelar" xml:space="preserve"><value>Cancel</value></data>
+  <data name="La cancelación cierra 24 h antes del inicio" xml:space="preserve"><value>Cancellation closes 24 h before start</value></data>
+  <data name="Tu inscripción en {0} · {1} fue cancelada." xml:space="preserve"><value>Your enrollment in {0} · {1} was cancelled.</value></data>
+  <data name="Talleres cortos y presenciales con personas que lo hacen todos los días." xml:space="preserve"><value>Short, in-person workshops taught by people who do it every day.</value></data>
+  <data name="Inscríbete en segundos y cancela hasta 24 h antes" xml:space="preserve"><value>Enroll in seconds, cancel up to 24 h before</value></data>
+  <data name="Descarga tu certificado de inscripción" xml:space="preserve"><value>Download your enrollment certificate</value></data>
+  <data name="Grupos pequeños, práctica real" xml:space="preserve"><value>Small groups, real practice</value></data>
+  <data name="Bienvenido de nuevo. Tu próximo taller te espera." xml:space="preserve"><value>Welcome back. Your next workshop is waiting.</value></data>
+  <data name="Escribe tu correo y contraseña para continuar." xml:space="preserve"><value>Enter your email and password to continue.</value></data>
+  <data name="Correo electrónico" xml:space="preserve"><value>Email</value></data>
+  <data name="tu@correo.com" xml:space="preserve"><value>you@example.com</value></data>
+  <data name="Contraseña" xml:space="preserve"><value>Password</value></data>
+  <data name="¿Eres nuevo en SkillHub?" xml:space="preserve"><value>New to SkillHub?</value></data>
+  <data name="Crea una cuenta" xml:space="preserve"><value>Create an account</value></data>
+  <data name="Únete a SkillHub y empieza a aprender con práctica real." xml:space="preserve"><value>Join SkillHub and start learning hands-on.</value></data>
+  <data name="Crea tu cuenta" xml:space="preserve"><value>Create your account</value></data>
+  <data name="Te toma menos de un minuto." xml:space="preserve"><value>It takes less than a minute.</value></data>
+  <data name="Nombre completo" xml:space="preserve"><value>Full name</value></data>
+  <data name="Confirmar contraseña" xml:space="preserve"><value>Confirm password</value></data>
+  <data name="Mínimo 8 caracteres, con una mayúscula, una minúscula y un número." xml:space="preserve"><value>At least 8 characters, with an uppercase letter, a lowercase letter and a number.</value></data>
+  <data name="¿Ya tienes una cuenta?" xml:space="preserve"><value>Already have an account?</value></data>
+  <data name="Este portal es para participantes. Los empleados gestionan los talleres a través de la API de SkillHub." xml:space="preserve"><value>This portal is for participants. Employees manage workshops through the SkillHub API.</value></data>
+  <data name="¡Bienvenido a SkillHub, {0}!" xml:space="preserve"><value>Welcome to SkillHub, {0}!</value></data>
+  <data name="Este campo es obligatorio." xml:space="preserve"><value>This field is required.</value></data>
+  <data name="Introduce un correo electrónico válido." xml:space="preserve"><value>Enter a valid email address.</value></data>
+  <data name="Debe tener entre {2} y {1} caracteres." xml:space="preserve"><value>Must be between {2} and {1} characters long.</value></data>
+  <data name="Debe tener como máximo {1} caracteres." xml:space="preserve"><value>Must be at most {1} characters long.</value></data>
+  <data name="Las contraseñas no coinciden." xml:space="preserve"><value>The passwords do not match.</value></data>
+  <data name="Acceso denegado" xml:space="preserve"><value>Access denied</value></data>
+  <data name="Esta sección solo está disponible para participantes." xml:space="preserve"><value>This section is only available to participants.</value></data>
+  <data name="Volver a los talleres" xml:space="preserve"><value>Back to workshops</value></data>
+  <data name="Error" xml:space="preserve"><value>Error</value></data>
+  <data name="Algo salió mal" xml:space="preserve"><value>Something went wrong</value></data>
+  <data name="Ocurrió un error al procesar tu solicitud. Inténtalo de nuevo en unos minutos." xml:space="preserve"><value>An error occurred while processing your request. Please try again in a few minutes.</value></data>
+  <data name="ID de la solicitud:" xml:space="preserve"><value>Request ID:</value></data>
+</root>

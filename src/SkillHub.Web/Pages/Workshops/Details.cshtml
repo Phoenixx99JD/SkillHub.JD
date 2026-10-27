@@ -3,33 +3,87 @@
 @{
     ViewData["Title"] = Model.Workshop.Title;
     var w = Model.Workshop;
+    var cat = WorkshopCategory.FromCode(w.Code);
+    var taken = w.Capacity == 0 ? 100 : (w.Capacity - w.AvailableSeats) * 100 / w.Capacity;
+    var seatsClass = w.AvailableSeats == 0 ? "full" : w.AvailableSeats <= 3 ? "low" : "";
 }
 
-<nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a asp-page="/Index">Workshops</a></li>
-        <li class="breadcrumb-item active" aria-current="page">@w.Code</li>
-    </ol>
-</nav>
+<div class="@cat.CssClass">
+    <section class="detail-hero">
+        @Icons.Get(cat.IconName, "cover-icon")
+        <div class="container position-relative">
+            <a asp-page="/Index" class="back-link mb-3">@Icons.Get("arrow-left") @L["Todos los talleres"]</a>
+            <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
+                <span class="cover-chip">@cat.Icon @L[cat.Name]</span>
+                <span class="cover-chip workshop-code text-white">@w.Code</span>
+            </div>
+            <h1 class="mb-0">@w.Title</h1>
+        </div>
+    </section>
 
-<div class="row g-4">
-    <div class="col-lg-8">
-        <span class="badge text-bg-light workshop-code mb-2">@w.Code</span>
-        <h1 class="h3">@w.Title</h1>
-        <p class="lead fs-6" style="white-space: pre-line">@w.Description</p>
-    </div>
-    <div class="col-lg-4">
-        <div class="card">
-            <div class="card-body">
-                <dl class="mb-3">
-                    <dt>Instructor</dt>
-                    <dd>@w.InstructorName <br /><span class="text-muted small">@w.InstructorSpecialty</span></dd>
-                    <dt>Schedule</dt>
-                    <dd>@w.StartsAt.ToSchedule(w.EndsAt)</dd>
-                    <dt>Seats</dt>
-                    <dd>@w.AvailableSeats available of @w.Capacity</dd>
-                </dl>
-                <partial name="_WorkshopEnrollButton" model="(w, Model.IsEnrolled)" />
+    <div class="container page-overlap">
+        <div class="row g-4">
+            <div class="col-lg-8">
+                <div class="panel">
+                    <h2>@L["Sobre este taller"]</h2>
+                    <p class="description mb-4">@w.Description</p>
+
+                    <h2>@L["Tu instructor"]</h2>
+                    <div class="instructor">
+                        <span class="avatar avatar-lg">@w.InstructorName.ToInitials()</span>
+                        <div>
+                            <div class="name fs-6">@w.InstructorName</div>
+                            <div class="role">@w.InstructorSpecialty</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <aside class="panel panel-elevated">
+                    <ul class="info-list">
+                        <li>
+                            <span class="info-icon">@Icons.Get("calendar")</span>
+                            <div>
+                                <div class="info-label">@L["Fecha"]</div>
+                                <div class="info-value">@w.StartsAt.ToDisplayDate()</div>
+                                @if (w.StartsAt.Date != w.EndsAt.Date)
+                                {
+                                    <div class="info-sub">@L["hasta el {0}", w.EndsAt.ToDisplayDate()]</div>
+                                }
+                            </div>
+                        </li>
+                        <li>
+                            <span class="info-icon">@Icons.Get("clock")</span>
+                            <div>
+                                <div class="info-label">@L["Horario"]</div>
+                                <div class="info-value">@w.StartsAt.ToTimeRange(w.EndsAt)</div>
+                            </div>
+                        </li>
+                        <li>
+                            <span class="info-icon">@Icons.Get("users")</span>
+                            <div class="flex-grow-1">
+                                <div class="info-label">@L["Cupos"]</div>
+                                <div class="seats mb-0 mt-1">
+                                    <div class="seats-label">
+                                        <span class="left @seatsClass">
+                                            @(w.AvailableSeats == 0 ? L["Agotado"] : L["{0} de {1} disponibles", w.AvailableSeats, w.Capacity])
+                                        </span>
+                                    </div>
+                                    <div class="seats-bar"><span style="width: @taken%"></span></div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+
+                    @{ ViewData["Block"] = true; }
+                    <partial name="_WorkshopEnrollButton" model="(w, Model.IsEnrolled)" view-data="ViewData" />
+
+                    <ul class="perk-list">
+                        <li>@Icons.Get("award") @L["Certificado de inscripción (PDF)"]</li>
+                        <li>@Icons.Get("check") @L["Cancelación gratis hasta 24 h antes"]</li>
+                    </ul>
+                </aside>
             </div>
         </div>
     </div>

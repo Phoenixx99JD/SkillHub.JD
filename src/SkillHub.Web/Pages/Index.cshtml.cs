@@ -52,7 +52,7 @@ public class IndexModel(IWorkshopService workshopService, IEnrollmentService enr
         if (await TryExecuteAsync(async () => enrollment = await enrollmentService.EnrollCurrentParticipantAsync(
                 new CreateEnrollmentRequest { WorkshopId = workshopId }, ct)))
         {
-            SuccessMessage = $"You are now enrolled in {enrollment!.WorkshopCode} · {enrollment.WorkshopTitle}.";
+            SuccessMessage = L["Quedaste inscrito en {0} · {1}.", enrollment!.WorkshopCode, enrollment.WorkshopTitle];
         }
         else
         {

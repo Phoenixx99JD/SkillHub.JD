@@ -1,5 +1,8 @@
 @using SkillHub.Web
 @using SkillHub.Web.Infrastructure
+@using SkillHub.Web.Infrastructure.Localization
 @using SkillHub.Application.Common
+@using Microsoft.Extensions.Localization
 @namespace SkillHub.Web.Pages
 @addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@inject IStringLocalizer<SharedResource> L

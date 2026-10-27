@@ -1,0 +1,16 @@
+<div class="auth-aside">
+    <a asp-page="/Index" class="d-inline-flex align-items-center gap-2 text-white fw-bold fs-5 mb-5">
+        <span class="brand-mark">@Icons.Get("sparkles")</span> SkillHub
+    </a>
+    <h2 class="mb-3">@ViewData["AsideTitle"]</h2>
+    <p class="mb-0">@L["Talleres cortos y presenciales con personas que lo hacen todos los días."]</p>
+    <ul class="perk-list mt-4">
+        <li>@Icons.Get("check") @L["Inscríbete en segundos y cancela hasta 24 h antes"]</li>
+        <li>@Icons.Get("check") @L["Descarga tu certificado de inscripción"]</li>
+        <li>@Icons.Get("check") @L["Grupos pequeños, práctica real"]</li>
+    </ul>
+    <div class="floating-icons">
+        @Icons.Get("camera") @Icons.Get("chef") @Icons.Get("mic")
+        @Icons.Get("palette") @Icons.Get("megaphone") @Icons.Get("music")
+    </div>
+</div>

@@ -1,57 +1,81 @@
 <!DOCTYPE html>
-<html lang="en">
+@{
+    var currentPage = ViewContext.RouteData.Values["page"] as string;
+    string NavClass(string page) => currentPage == page ? "nav-link active" : "nav-link";
+
+    // The language switch offers the language that is not active and returns to the same page.
+    var otherCulture = SupportedCultures.IsSpanish ? SupportedCultures.English : SupportedCultures.Spanish;
+    var returnUrl = Context.Request.Path + Context.Request.QueryString;
+}
+<html lang="@(SupportedCultures.IsSpanish ? "es" : "en")">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - SkillHub</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" />
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
 <body class="d-flex flex-column min-vh-100">
     <header>
-        <nav class="navbar navbar-expand-sm navbar-dark bg-brand mb-4">
+        <nav class="navbar navbar-expand-md app-nav">
             <div class="container">
-                <a class="navbar-brand fw-bold" asp-page="/Index">SkillHub</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
-                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <a class="navbar-brand" asp-page="/Index">
+                    <span class="brand-mark">@Icons.Get("sparkles")</span>
+                    SkillHub
+                </a>
+                <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav"
+                        aria-controls="mainNav" aria-expanded="false" aria-label="@L["Abrir menú"]">
                     <span class="navbar-toggler-icon"></span>
                 </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item"><a class="nav-link" asp-page="/Index">Workshops</a></li>
+                <div id="mainNav" class="navbar-collapse collapse">
+                    <ul class="navbar-nav me-auto ms-md-4 gap-md-1">
+                        <li class="nav-item"><a class="@NavClass("/Index")" asp-page="/Index">@L["Talleres"]</a></li>
                         @if (User.IsInRole(Roles.Participant))
                         {
-                            <li class="nav-item"><a class="nav-link" asp-page="/Enrollments/Index">My enrollments</a></li>
+                            <li class="nav-item"><a class="@NavClass("/Enrollments/Index")" asp-page="/Enrollments/Index">@L["Mis inscripciones"]</a></li>
                         }
                     </ul>
-                    <ul class="navbar-nav">
+                    <div class="d-flex align-items-center gap-2 py-2 py-md-0">
+                        <a href="/culture/@otherCulture?returnUrl=@Uri.EscapeDataString(returnUrl)" class="btn btn-sm lang-switch"
+                           title="@L[SupportedCultures.IsSpanish ? "Ver en inglés" : "Ver en español"]" lang="@(SupportedCultures.IsSpanish ? "en" : "es")">
+                            @Icons.Get("globe") @(SupportedCultures.IsSpanish ? "English" : "Español")
+                        </a>
                         @if (User.Identity?.IsAuthenticated == true)
                         {
-                            <li class="nav-item"><span class="navbar-text me-3">Hi, @User.Identity.Name</span></li>
-                            <li class="nav-item">
-                                <form method="post" asp-page="/Account/Logout">
-                                    <button type="submit" class="btn btn-sm btn-outline-light">Log out</button>
-                                </form>
-                            </li>
+                            <span class="user-pill mx-2">
+                                <span class="avatar">@User.Identity.Name!.ToInitials()</span>
+                                <span class="d-none d-lg-inline">@User.Identity.Name</span>
+                            </span>
+                            <form method="post" asp-page="/Account/Logout">
+                                <button type="submit" class="btn btn-sm btn-soft">@Icons.Get("logout") @L["Cerrar sesión"]</button>
+                            </form>
                         }
                         else
                         {
-                            <li class="nav-item"><a class="nav-link" asp-page="/Account/Login">Log in</a></li>
-                            <li class="nav-item"><a class="btn btn-sm btn-light ms-2" asp-page="/Account/Register">Sign up</a></li>
+                            <a class="btn btn-sm btn-link text-decoration-none fw-semibold" asp-page="/Account/Login">@L["Iniciar sesión"]</a>
+                            <a class="btn btn-sm btn-brand px-3" asp-page="/Account/Register">@L["Registrarse"]</a>
                         }
-                    </ul>
+                    </div>
                 </div>
             </div>
         </nav>
     </header>
 
-    <main role="main" class="container pb-4 flex-grow-1">
+    <main role="main" class="flex-grow-1 pb-5">
         <partial name="_Alerts" />
         @RenderBody()
     </main>
 
-    <footer class="border-top py-3 text-muted small">
-        <div class="container">&copy; @DateTime.Now.Year SkillHub · In-person workshops</div>
+    <footer class="app-footer">
+        <div class="container d-flex flex-wrap justify-content-between align-items-center gap-2">
+            <span class="d-inline-flex align-items-center gap-2 fw-semibold text-body">
+                <span class="brand-mark">@Icons.Get("sparkles")</span> SkillHub
+            </span>
+            <span>&copy; @DateTime.Now.Year SkillHub · @L["Talleres cortos y presenciales"]</span>
+        </div>
     </footer>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

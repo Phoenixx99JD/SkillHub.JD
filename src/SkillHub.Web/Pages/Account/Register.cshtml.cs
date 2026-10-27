@@ -16,8 +16,8 @@ public class RegisterModel(IAuthService authService) : AppPageModel
 
     public class InputModel : RegisterRequest
     {
-        [Required, Compare(nameof(Password), ErrorMessage = "The passwords do not match.")]
-        [Display(Name = "Confirm password")]
+        [Required, Compare(nameof(Password), ErrorMessage = "Las contraseñas no coinciden.")]
+        [Display(Name = "Confirmar contraseña")]
         public string ConfirmPassword { get; set; } = string.Empty;
     }
 
@@ -34,7 +34,7 @@ public class RegisterModel(IAuthService authService) : AppPageModel
             return Page();
 
         await HttpContext.SignInUserAsync(user!);
-        SuccessMessage = $"Welcome to SkillHub, {user!.FullName}!";
+        SuccessMessage = L["¡Bienvenido a SkillHub, {0}!", user!.FullName];
         return RedirectToLocal(ReturnUrl);
     }
 }

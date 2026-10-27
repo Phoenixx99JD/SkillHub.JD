@@ -1,20 +1,23 @@
 @model (SkillHub.Application.DTOs.Workshops.WorkshopDto Workshop, bool IsEnrolled)
+@{
+    var block = ViewData["Block"] is true ? " w-100" : "";
+}
 @if (Model.IsEnrolled)
 {
-    <span class="btn btn-outline-success btn-sm disabled">Enrolled ✓</span>
+    <span class="btn btn-sm btn-status@(block)">@Icons.Get("check") @L["Inscrito"]</span>
 }
 else if (Model.Workshop.AvailableSeats == 0)
 {
-    <span class="btn btn-outline-secondary btn-sm disabled">Full</span>
+    <span class="btn btn-sm btn-status-muted@(block)">@L["Agotado"]</span>
 }
 else if (User.IsInRole(Roles.Employee))
 {
-    <span class="text-muted small">Employees manage enrollments through the API</span>
+    <span class="text-muted small">@L["Los empleados gestionan las inscripciones desde la API"]</span>
 }
 else
 {
-    <form method="post" asp-page="/Index" asp-page-handler="Enroll" class="d-inline">
+    <form method="post" asp-page="/Index" asp-page-handler="Enroll" class="d-inline@(block)">
         <input type="hidden" name="workshopId" value="@Model.Workshop.Id" />
-        <button type="submit" class="btn btn-brand btn-sm">Enroll</button>
+        <button type="submit" class="btn btn-sm btn-brand px-3@(block)">@L["Inscribirme"] @Icons.Get("arrow-right")</button>
     </form>
 }

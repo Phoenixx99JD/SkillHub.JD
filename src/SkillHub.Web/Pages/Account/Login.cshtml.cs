@@ -29,7 +29,7 @@ public class LoginModel(IAuthService authService) : AppPageModel
         if (!user!.Roles.Contains(Roles.Participant))
         {
             ModelState.AddModelError(string.Empty,
-                "This portal is for participants. Employees manage workshops through the SkillHub API.");
+                L["Este portal es para participantes. Los empleados gestionan los talleres a través de la API de SkillHub."]);
             return Page();
         }
 

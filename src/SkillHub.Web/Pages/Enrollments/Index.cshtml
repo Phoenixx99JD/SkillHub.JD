@@ -1,78 +1,98 @@
 @page
 @model SkillHub.Web.Pages.Enrollments.IndexModel
 @{
-    ViewData["Title"] = "My enrollments";
+    ViewData["Title"] = L["Mis inscripciones"];
+    var activeCount = Model.Enrollments.Count(e => e.Status == "Active");
+    var cancelledCount = Model.Enrollments.Count - activeCount;
 }
 
-<h1 class="h3 mb-4">My enrollments</h1>
-
-@if (Model.Enrollments.Count == 0)
-{
-    <div class="text-center text-muted py-5">
-        <p>You have no enrollments yet.</p>
-        <a asp-page="/Index" class="btn btn-brand">Browse workshops</a>
+<div class="container">
+    <div class="page-header">
+        <h1 class="h2">@L["Mis inscripciones"]</h1>
+        <p class="text-muted mb-0">@L["Tus cupos, certificados y cancelaciones en un solo lugar."]</p>
     </div>
-}
-else
-{
-    <div class="table-responsive">
-        <table class="table align-middle">
-            <thead>
-            <tr>
-                <th>Workshop</th>
-                <th>Instructor</th>
-                <th>Schedule</th>
-                <th>Status</th>
-                <th class="text-end">Actions</th>
-            </tr>
-            </thead>
-            <tbody>
+
+    @if (Model.Enrollments.Count == 0)
+    {
+        <div class="empty-state">
+            <span class="empty-icon">@Icons.Get("ticket", "icon icon-lg")</span>
+            <h2 class="h5">@L["Aún no tienes inscripciones"]</h2>
+            <p class="text-muted mb-3">@L["Encuentra un taller que te guste y reserva tu cupo en segundos."]</p>
+            <a asp-page="/Index" class="btn btn-brand">@L["Ver talleres"] @Icons.Get("arrow-right")</a>
+        </div>
+    }
+    else
+    {
+        <div class="row g-3 mb-4">
+            <div class="col-sm-4">
+                <div class="summary-card">
+                    <span class="summary-icon tone-brand">@Icons.Get("ticket")</span>
+                    <div><div class="value">@Model.Enrollments.Count</div><div class="label">@L["Inscripciones en total"]</div></div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="summary-card">
+                    <span class="summary-icon tone-green">@Icons.Get("check")</span>
+                    <div><div class="value">@activeCount</div><div class="label">@L["Activas"]</div></div>
+                </div>
+            </div>
+            <div class="col-sm-4">
+                <div class="summary-card">
+                    <span class="summary-icon tone-slate">@Icons.Get("x")</span>
+                    <div><div class="value">@cancelledCount</div><div class="label">@L["Canceladas"]</div></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-grid gap-3">
             @foreach (var e in Model.Enrollments)
             {
                 var active = e.Status == "Active";
-                <tr class="@(active ? "" : "text-muted")">
-                    <td>
-                        <span class="badge text-bg-light workshop-code">@e.WorkshopCode</span>
-                        <div>@e.WorkshopTitle</div>
-                        <div class="small text-muted">Enrolled @e.EnrolledAt.ToDisplayDateTime()</div>
-                    </td>
-                    <td>@e.InstructorName</td>
-                    <td class="small">@e.WorkshopStartsAt.ToSchedule(e.WorkshopEndsAt)</td>
-                    <td>
-                        @if (active)
-                        {
-                            <span class="badge text-bg-success">Active</span>
-                        }
-                        else
-                        {
-                            <span class="badge text-bg-secondary">Cancelled</span>
-                            @if (e.CancelledAt is not null)
+                var cat = WorkshopCategory.FromCode(e.WorkshopCode);
+                <div class="enrollment-item @cat.CssClass @(active ? "" : "is-cancelled")">
+                    <div class="date-tile">
+                        <span class="month">@e.WorkshopStartsAt.ToMonthAbbreviation()</span>
+                        <span class="day">@e.WorkshopStartsAt.Day</span>
+                    </div>
+
+                    <div class="enrollment-main">
+                        <div class="d-flex flex-wrap align-items-center gap-2">
+                            <span class="workshop-code">@e.WorkshopCode</span>
+                            <span class="status-badge @(active ? "status-active" : "status-cancelled")">@L[active ? "Activa" : "Cancelada"]</span>
+                        </div>
+                        <div class="title">@e.WorkshopTitle</div>
+                        <div class="enrollment-meta">
+                            <span>@Icons.Get("clock") @e.WorkshopStartsAt.ToSchedule(e.WorkshopEndsAt)</span>
+                            <span>@Icons.Get("user") @e.InstructorName</span>
+                        </div>
+                        <div class="small text-muted mt-1">
+                            @L["Inscrito el {0}", e.EnrolledAt.ToDisplayDateTime()]
+                            @if (!active && e.CancelledAt is not null)
                             {
-                                <div class="small">@e.CancelledAt.Value.ToDisplayDateTime()</div>
-                                <div class="small">by @e.CancelledBy</div>
+                                <text> · @L["Cancelada el {0} por {1}", e.CancelledAt.Value.ToDisplayDateTime(), e.CancelledBy ?? ""]</text>
                             }
-                        }
-                    </td>
-                    <td class="text-end text-nowrap">
-                        @if (active)
-                        {
-                            <a asp-page-handler="Certificate" asp-route-id="@e.Id" class="btn btn-sm btn-outline-primary">Certificate (PDF)</a>
+                        </div>
+                    </div>
+
+                    @if (active)
+                    {
+                        <div class="enrollment-actions">
+                            <a asp-page-handler="Certificate" asp-route-id="@e.Id" class="btn btn-sm btn-soft">@Icons.Get("download") @L["Certificado"]</a>
                             @if (e.CanBeCancelled)
                             {
                                 <form method="post" asp-page-handler="Cancel" asp-route-id="@e.Id" class="d-inline"
-                                      onsubmit="return confirm('Cancel your enrollment in @e.WorkshopCode?');">
-                                    <button type="submit" class="btn btn-sm btn-outline-danger">Cancel</button>
+                                      onsubmit="return confirm('@L["¿Cancelar tu inscripción en {0}?", e.WorkshopCode]');">
+                                    <button type="submit" class="btn btn-sm btn-ghost-danger">@L["Cancelar"]</button>
                                 </form>
                             }
                             else
                             {
-                                <span class="d-block small text-muted mt-1">Cancellation closes 24 h before start</span>
+                                <span class="small text-muted d-inline-flex align-items-center gap-1">@Icons.Get("lock") @L["La cancelación cierra 24 h antes del inicio"]</span>
                             }
-                        }
-                    </td>
-                </tr>
+                        </div>
+                    }
+                </div>
             }
-            </tbody>
-        </table>
-    </div>
-}
+        </div>
+    }
+</div>

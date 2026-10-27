@@ -18,7 +18,7 @@ public class IndexModel(IEnrollmentService enrollmentService) : AppPageModel
     {
         EnrollmentDto? cancelled = null;
         if (await TryExecuteAsync(async () => cancelled = await enrollmentService.CancelAsync(id, ct)))
-            SuccessMessage = $"Your enrollment in {cancelled!.WorkshopCode} · {cancelled.WorkshopTitle} was cancelled.";
+            SuccessMessage = L["Tu inscripción en {0} · {1} fue cancelada.", cancelled!.WorkshopCode, cancelled.WorkshopTitle];
         else
             KeepErrorsForRedirect();
 

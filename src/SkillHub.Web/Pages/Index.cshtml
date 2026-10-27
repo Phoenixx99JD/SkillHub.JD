@@ -1,59 +1,115 @@
 @page
 @model IndexModel
 @{
-    ViewData["Title"] = "Workshops";
+    ViewData["Title"] = L["Talleres"];
+    var hasSearch = !string.IsNullOrWhiteSpace(Model.Search);
 }
 
-<div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-4">
-    <div>
-        <h1 class="h3 mb-1">Upcoming workshops</h1>
-        <p class="text-muted mb-0">Short, in-person workshops. Pick one and save your seat.</p>
-    </div>
-    <form method="get" class="d-flex gap-2">
-        <input asp-for="Search" class="form-control" placeholder="Search by title, code or instructor" />
-        <button type="submit" class="btn btn-outline-secondary">Search</button>
-    </form>
-</div>
+<section class="hero">
+    <div class="container">
+        <span class="hero-eyebrow mb-3">@Icons.Get("map-pin") @L["Presencial · Grupos pequeños"]</span>
+        <h1 class="mb-3">@L["Aprende algo nuevo,"]<br />@L["con práctica real."]</h1>
+        <p class="lead mb-4">@L["Talleres cortos de fotografía, cocina, oratoria, diseño y más. Elige uno y reserva tu cupo."]</p>
 
-@if (Model.Workshops.Count == 0)
-{
-    <div class="text-center text-muted py-5">
-        <p class="mb-0">There are no upcoming workshops@(string.IsNullOrWhiteSpace(Model.Search) ? "" : " matching your search").</p>
+        <form method="get" class="search-box" role="search">
+            @Icons.Get("search")
+            <input asp-for="Search" placeholder="@L["Busca por título, código o instructor"]" aria-label="@L["Buscar talleres"]" />
+            <button type="submit" class="btn btn-brand">@L["Buscar"]</button>
+        </form>
+
+        <div class="stat-row">
+            <div>
+                <div class="stat-value">@Model.Workshops.Count</div>
+                <div class="stat-label">@L[hasSearch ? "Talleres encontrados" : "Próximos talleres"]</div>
+            </div>
+            <div>
+                <div class="stat-value">@Model.Workshops.Sum(w => w.AvailableSeats)</div>
+                <div class="stat-label">@L["Cupos disponibles"]</div>
+            </div>
+            <div>
+                <div class="stat-value">@Model.Workshops.Select(w => w.InstructorEmail).Distinct().Count()</div>
+                <div class="stat-label">@L["Instructores"]</div>
+            </div>
+        </div>
     </div>
-}
-else
-{
-    <div class="row g-4">
-        @foreach (var w in Model.Workshops)
+</section>
+
+<div class="container page-overlap">
+    @if (Model.Workshops.Count == 0)
+    {
+        <div class="empty-state">
+            <span class="empty-icon">@Icons.Get("search", "icon icon-lg")</span>
+            <h2 class="h5">@L["No se encontraron talleres"]</h2>
+            <p class="text-muted mb-3">
+                @(hasSearch ? L["No hay próximos talleres que coincidan con “{0}”.", Model.Search!] : L["No hay próximos talleres por ahora."])
+            </p>
+            @if (hasSearch)
+            {
+                <a asp-page="/Index" class="btn btn-soft">@L["Limpiar búsqueda"]</a>
+            }
+        </div>
+    }
+    else
+    {
+        @if (hasSearch)
         {
-            <div class="col-md-6 col-lg-4">
-                <div class="card h-100 workshop-card">
-                    <div class="card-body d-flex flex-column">
-                        <div class="d-flex justify-content-between align-items-start mb-2">
-                            <span class="badge text-bg-light workshop-code">@w.Code</span>
-                            @if (w.AvailableSeats == 0)
-                            {
-                                <span class="badge text-bg-secondary">Full</span>
-                            }
-                            else
-                            {
-                                <span class="badge @(w.AvailableSeats <= 3 ? "text-bg-warning" : "text-bg-success")">
-                                    @w.AvailableSeats of @w.Capacity seats left
-                                </span>
-                            }
-                        </div>
-                        <h2 class="h5 card-title">
-                            <a asp-page="/Workshops/Details" asp-route-id="@w.Id" class="text-decoration-none text-brand">@w.Title</a>
-                        </h2>
-                        <p class="text-muted small mb-2">@w.InstructorName · @w.InstructorSpecialty</p>
-                        <p class="small mb-3">@w.StartsAt.ToSchedule(w.EndsAt)</p>
-                        <div class="mt-auto d-flex justify-content-between align-items-center">
-                            <a asp-page="/Workshops/Details" asp-route-id="@w.Id" class="small">Details</a>
-                            <partial name="_WorkshopEnrollButton" model="(w, Model.EnrolledWorkshopIds.Contains(w.Id))" />
-                        </div>
-                    </div>
-                </div>
+            <div class="d-flex align-items-center gap-2 mb-3 pt-2">
+                <span class="text-muted">@L["Resultados para"] <strong class="text-body">“@Model.Search”</strong></span>
+                <a asp-page="/Index" class="btn btn-sm btn-soft">@Icons.Get("x") @L["Limpiar"]</a>
             </div>
         }
-    </div>
-}
+
+        <div class="row g-4">
+            @foreach (var w in Model.Workshops)
+            {
+                var cat = WorkshopCategory.FromCode(w.Code);
+                var taken = w.Capacity == 0 ? 100 : (w.Capacity - w.AvailableSeats) * 100 / w.Capacity;
+                var seatsClass = w.AvailableSeats == 0 ? "full" : w.AvailableSeats <= 3 ? "low" : "";
+                <div class="col-sm-6 col-lg-4">
+                    <article class="workshop-card @cat.CssClass">
+                        <div class="workshop-cover">
+                            <span class="cover-chip">@cat.Icon @L[cat.Name]</span>
+                            @Icons.Get(cat.IconName, "cover-icon")
+                            <div class="date-tile">
+                                <span class="month">@w.StartsAt.ToMonthAbbreviation()</span>
+                                <span class="day">@w.StartsAt.Day</span>
+                            </div>
+                        </div>
+                        <div class="workshop-body">
+                            <span class="workshop-code">@w.Code</span>
+                            <h2 class="workshop-title">
+                                <a asp-page="/Workshops/Details" asp-route-id="@w.Id">@w.Title</a>
+                            </h2>
+
+                            <ul class="meta-list">
+                                <li>@Icons.Get("calendar") @w.StartsAt.ToDisplayDate()</li>
+                                <li>@Icons.Get("clock") @w.StartsAt.ToTimeRange(w.EndsAt)</li>
+                            </ul>
+
+                            <div class="seats">
+                                <div class="seats-label">
+                                    <span class="left @seatsClass">
+                                        @(w.AvailableSeats == 0 ? L["Agotado"] : L["{0} cupos libres", w.AvailableSeats])
+                                    </span>
+                                    <span class="total">@L["{0}/{1} ocupados", w.Capacity - w.AvailableSeats, w.Capacity]</span>
+                                </div>
+                                <div class="seats-bar"><span style="width: @taken%"></span></div>
+                            </div>
+
+                            <div class="workshop-footer">
+                                <div class="instructor">
+                                    <span class="avatar">@w.InstructorName.ToInitials()</span>
+                                    <div>
+                                        <div class="name">@w.InstructorName</div>
+                                        <div class="role">@w.InstructorSpecialty</div>
+                                    </div>
+                                </div>
+                                <partial name="_WorkshopEnrollButton" model="(w, Model.EnrolledWorkshopIds.Contains(w.Id))" />
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            }
+        </div>
+    }
+</div>

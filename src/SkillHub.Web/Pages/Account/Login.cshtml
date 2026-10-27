@@ -1,30 +1,35 @@
 @page
 @model SkillHub.Web.Pages.Account.LoginModel
 @{
-    ViewData["Title"] = "Log in";
+    ViewData["Title"] = L["Iniciar sesión"];
+    ViewData["AsideTitle"] = L["Bienvenido de nuevo. Tu próximo taller te espera."];
 }
 
-<div class="card auth-card shadow-sm">
-    <div class="card-body p-4">
-        <h1 class="h4 mb-3">Log in</h1>
-        <form method="post">
-            <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2 small" role="alert"></div>
-            <input type="hidden" asp-for="ReturnUrl" />
-            <div class="mb-3">
-                <label asp-for="Input.Email" class="form-label">Email</label>
-                <input asp-for="Input.Email" class="form-control" autocomplete="username" />
-                <span asp-validation-for="Input.Email" class="text-danger small"></span>
-            </div>
-            <div class="mb-3">
-                <label asp-for="Input.Password" class="form-label">Password</label>
-                <input asp-for="Input.Password" type="password" class="form-control" autocomplete="current-password" />
-                <span asp-validation-for="Input.Password" class="text-danger small"></span>
-            </div>
-            <button type="submit" class="btn btn-brand w-100">Log in</button>
-        </form>
-        <p class="text-center small mt-3 mb-0">
-            New to SkillHub? <a asp-page="/Account/Register" asp-route-returnUrl="@Model.ReturnUrl">Create an account</a>
-        </p>
+<div class="container">
+    <div class="auth-shell">
+        <partial name="_AuthAside" />
+        <div class="auth-form">
+            <h1 class="mb-1">@L["Iniciar sesión"]</h1>
+            <p class="text-muted mb-4">@L["Escribe tu correo y contraseña para continuar."]</p>
+            <form method="post">
+                <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2 small" role="alert"></div>
+                <input type="hidden" asp-for="ReturnUrl" />
+                <div class="mb-3">
+                    <label asp-for="Input.Email" class="form-label">@L["Correo electrónico"]</label>
+                    <input asp-for="Input.Email" class="form-control" autocomplete="username" placeholder="@L["tu@correo.com"]" />
+                    <span asp-validation-for="Input.Email" class="text-danger small"></span>
+                </div>
+                <div class="mb-4">
+                    <label asp-for="Input.Password" class="form-label">@L["Contraseña"]</label>
+                    <input asp-for="Input.Password" type="password" class="form-control" autocomplete="current-password" placeholder="••••••••" />
+                    <span asp-validation-for="Input.Password" class="text-danger small"></span>
+                </div>
+                <button type="submit" class="btn btn-brand btn-lg-form w-100">@L["Iniciar sesión"] @Icons.Get("arrow-right")</button>
+            </form>
+            <p class="text-center small text-muted mt-4 mb-0">
+                @L["¿Eres nuevo en SkillHub?"] <a asp-page="/Account/Register" asp-route-returnUrl="@Model.ReturnUrl" class="fw-semibold">@L["Crea una cuenta"]</a>
+            </p>
+        </div>
     </div>
 </div>
 
