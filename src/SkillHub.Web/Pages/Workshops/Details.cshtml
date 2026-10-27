@@ -1,0 +1,36 @@
+@page "{id:guid}"
+@model SkillHub.Web.Pages.Workshops.DetailsModel
+@{
+    ViewData["Title"] = Model.Workshop.Title;
+    var w = Model.Workshop;
+}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a asp-page="/Index">Workshops</a></li>
+        <li class="breadcrumb-item active" aria-current="page">@w.Code</li>
+    </ol>
+</nav>
+
+<div class="row g-4">
+    <div class="col-lg-8">
+        <span class="badge text-bg-light workshop-code mb-2">@w.Code</span>
+        <h1 class="h3">@w.Title</h1>
+        <p class="lead fs-6" style="white-space: pre-line">@w.Description</p>
+    </div>
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-body">
+                <dl class="mb-3">
+                    <dt>Instructor</dt>
+                    <dd>@w.InstructorName <br /><span class="text-muted small">@w.InstructorSpecialty</span></dd>
+                    <dt>Schedule</dt>
+                    <dd>@w.StartsAt.ToSchedule(w.EndsAt)</dd>
+                    <dt>Seats</dt>
+                    <dd>@w.AvailableSeats available of @w.Capacity</dd>
+                </dl>
+                <partial name="_WorkshopEnrollButton" model="(w, Model.IsEnrolled)" />
+            </div>
+        </div>
+    </div>
+</div>

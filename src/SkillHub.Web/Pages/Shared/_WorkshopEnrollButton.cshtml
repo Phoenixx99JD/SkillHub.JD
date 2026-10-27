@@ -1,0 +1,20 @@
+@model (SkillHub.Application.DTOs.Workshops.WorkshopDto Workshop, bool IsEnrolled)
+@if (Model.IsEnrolled)
+{
+    <span class="btn btn-outline-success btn-sm disabled">Enrolled ✓</span>
+}
+else if (Model.Workshop.AvailableSeats == 0)
+{
+    <span class="btn btn-outline-secondary btn-sm disabled">Full</span>
+}
+else if (User.IsInRole(Roles.Employee))
+{
+    <span class="text-muted small">Employees manage enrollments through the API</span>
+}
+else
+{
+    <form method="post" asp-page="/Index" asp-page-handler="Enroll" class="d-inline">
+        <input type="hidden" name="workshopId" value="@Model.Workshop.Id" />
+        <button type="submit" class="btn btn-brand btn-sm">Enroll</button>
+    </form>
+}

@@ -1,0 +1,59 @@
+@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Workshops";
+}
+
+<div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-4">
+    <div>
+        <h1 class="h3 mb-1">Upcoming workshops</h1>
+        <p class="text-muted mb-0">Short, in-person workshops. Pick one and save your seat.</p>
+    </div>
+    <form method="get" class="d-flex gap-2">
+        <input asp-for="Search" class="form-control" placeholder="Search by title, code or instructor" />
+        <button type="submit" class="btn btn-outline-secondary">Search</button>
+    </form>
+</div>
+
+@if (Model.Workshops.Count == 0)
+{
+    <div class="text-center text-muted py-5">
+        <p class="mb-0">There are no upcoming workshops@(string.IsNullOrWhiteSpace(Model.Search) ? "" : " matching your search").</p>
+    </div>
+}
+else
+{
+    <div class="row g-4">
+        @foreach (var w in Model.Workshops)
+        {
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 workshop-card">
+                    <div class="card-body d-flex flex-column">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <span class="badge text-bg-light workshop-code">@w.Code</span>
+                            @if (w.AvailableSeats == 0)
+                            {
+                                <span class="badge text-bg-secondary">Full</span>
+                            }
+                            else
+                            {
+                                <span class="badge @(w.AvailableSeats <= 3 ? "text-bg-warning" : "text-bg-success")">
+                                    @w.AvailableSeats of @w.Capacity seats left
+                                </span>
+                            }
+                        </div>
+                        <h2 class="h5 card-title">
+                            <a asp-page="/Workshops/Details" asp-route-id="@w.Id" class="text-decoration-none text-brand">@w.Title</a>
+                        </h2>
+                        <p class="text-muted small mb-2">@w.InstructorName · @w.InstructorSpecialty</p>
+                        <p class="small mb-3">@w.StartsAt.ToSchedule(w.EndsAt)</p>
+                        <div class="mt-auto d-flex justify-content-between align-items-center">
+                            <a asp-page="/Workshops/Details" asp-route-id="@w.Id" class="small">Details</a>
+                            <partial name="_WorkshopEnrollButton" model="(w, Model.EnrolledWorkshopIds.Contains(w.Id))" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}

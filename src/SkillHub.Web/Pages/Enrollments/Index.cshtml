@@ -1,0 +1,78 @@
+@page
+@model SkillHub.Web.Pages.Enrollments.IndexModel
+@{
+    ViewData["Title"] = "My enrollments";
+}
+
+<h1 class="h3 mb-4">My enrollments</h1>
+
+@if (Model.Enrollments.Count == 0)
+{
+    <div class="text-center text-muted py-5">
+        <p>You have no enrollments yet.</p>
+        <a asp-page="/Index" class="btn btn-brand">Browse workshops</a>
+    </div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table align-middle">
+            <thead>
+            <tr>
+                <th>Workshop</th>
+                <th>Instructor</th>
+                <th>Schedule</th>
+                <th>Status</th>
+                <th class="text-end">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach (var e in Model.Enrollments)
+            {
+                var active = e.Status == "Active";
+                <tr class="@(active ? "" : "text-muted")">
+                    <td>
+                        <span class="badge text-bg-light workshop-code">@e.WorkshopCode</span>
+                        <div>@e.WorkshopTitle</div>
+                        <div class="small text-muted">Enrolled @e.EnrolledAt.ToDisplayDateTime()</div>
+                    </td>
+                    <td>@e.InstructorName</td>
+                    <td class="small">@e.WorkshopStartsAt.ToSchedule(e.WorkshopEndsAt)</td>
+                    <td>
+                        @if (active)
+                        {
+                            <span class="badge text-bg-success">Active</span>
+                        }
+                        else
+                        {
+                            <span class="badge text-bg-secondary">Cancelled</span>
+                            @if (e.CancelledAt is not null)
+                            {
+                                <div class="small">@e.CancelledAt.Value.ToDisplayDateTime()</div>
+                                <div class="small">by @e.CancelledBy</div>
+                            }
+                        }
+                    </td>
+                    <td class="text-end text-nowrap">
+                        @if (active)
+                        {
+                            <a asp-page-handler="Certificate" asp-route-id="@e.Id" class="btn btn-sm btn-outline-primary">Certificate (PDF)</a>
+                            @if (e.CanBeCancelled)
+                            {
+                                <form method="post" asp-page-handler="Cancel" asp-route-id="@e.Id" class="d-inline"
+                                      onsubmit="return confirm('Cancel your enrollment in @e.WorkshopCode?');">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger">Cancel</button>
+                                </form>
+                            }
+                            else
+                            {
+                                <span class="d-block small text-muted mt-1">Cancellation closes 24 h before start</span>
+                            }
+                        }
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+}
